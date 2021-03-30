@@ -124,23 +124,23 @@ public class GenerateSql extends AbstractMojo {
         }
     }
 
-    private Set<Class<Database>> getDatabaseClasses() throws GeneratorException {
-        ScanResult scan = new ClassGraph()
-                .enableAllInfo()
-                .addClassLoader(localClassLoader)
-                .whitelistPackages(packages.toArray(new String[]{}))
-                .scan();
-        ClassInfoList infos = scan.getClassesImplementing(Database.class.getCanonicalName());
-        Set<Class<Database>> res = new HashSet<>();
-        for (ClassInfo info : infos) {
-            try {
-                res.add((Class<Database>) globalClassLoader.loadClass(info.getName()));
-            } catch (ClassNotFoundException e) {
-                throw new GeneratorException(format("Error loading classes '%s' from custom class loader (%s)", info.getName(), e.getMessage()), e);
+        private Set<Class<Database>> getDatabaseClasses() throws GeneratorException {
+            ScanResult scan = new ClassGraph()
+                    .enableAllInfo()
+                    .addClassLoader(localClassLoader)
+                    .whitelistPackages(packages.toArray(new String[]{}))
+                    .scan();
+            ClassInfoList infos = scan.getClassesImplementing(Database.class.getCanonicalName());
+            Set<Class<Database>> res = new HashSet<>();
+            for (ClassInfo info : infos) {
+                try {
+                    res.add((Class<Database>) globalClassLoader.loadClass(info.getName()));
+                } catch (ClassNotFoundException e) {
+                    throw new GeneratorException(format("Error loading classes '%s' from custom class loader (%s)", info.getName(), e.getMessage()), e);
+                }
             }
+            return res;
         }
-        return res;
-    }
 
     /**
      * Get a class loader that will load classes compiled during the build

@@ -3,6 +3,7 @@ package com.heliorm.sql;
 import com.heliorm.Orm;
 import com.heliorm.OrmException;
 import com.heliorm.Table;
+import com.heliorm.compound.CompoundOrm;
 import com.heliorm.def.Field;
 import com.heliorm.sql.mysql.MySqlDriver;
 import com.heliorm.sql.postgresql.PostgreSqlDriver;
@@ -69,6 +70,13 @@ abstract class AbstractOrmTest {
         if (useJson) {
             orm = new JsonOrm(orm);
             say("Testing JSON layer");
+        }
+        boolean useCompound = false;
+        String compound = System.getenv("ORM_TEST_COMPOUND");
+        useCompound = (compound == null) ? false : true;
+        if (useCompound) {
+            orm = new CompoundOrm(orm);
+            say("Testing Compound ORM");
         }
         deleteAll(Cat.class);
         deleteAll(Dog.class);

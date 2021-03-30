@@ -80,6 +80,12 @@
             <version>2.8.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.heliorm</groupId>
+            <artifactId>compound-orm</artifactId>
+            <version>0.89</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
